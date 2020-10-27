@@ -5,7 +5,7 @@ const axios = require('axios');
 
 const {WebhookClient} = require('dialogflow-fulfillment');
 
-const api='http://localhost:8000/';
+const api='http://127.0.0.1:8000/';
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
