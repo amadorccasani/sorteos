@@ -68,6 +68,6 @@ app.post('/webhook',express.json(), function(req, res) {
   agent.handleRequest(intentMap);
   });
 
-app.listen(3000,(e)=>{
+app.listen(process.env.PORT || 3000,(e)=>{
     console.log("run port 3000");
 })
