@@ -12,7 +12,15 @@ let nombred = [];
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
-  res.send('run server nodjs');
+  let now = new Date();
+let year = now.getFullYear();
+let month = now.getMonth() + 1;
+let day = now.getDate();
+let hour = now.getHours();
+let min = now.getMinutes();
+let sec = now.getSeconds();
+var f2 = new Date(year, month, day,20,00,00); 
+  res.send('run server nodjs '+f2);
 });
 app.post('/webhook',express.json(), function(req, res) {
   const agent = new WebhookClient({ request:req, response:res });
@@ -115,7 +123,7 @@ Gracias por su comprension :D`);
   Finalmente debes subir una captura (foto) del comprobante de pago (boleta o factura). *Luego de haber subido la imagen debes escribir la palabra “Finalizar”*. 🤓 Si seguiste mis indicaciones habrás completado tu registro al sorteo`);
 
   }
-  
+
   function despedida(agent) {
     let nombre = nombred[0];
     let nameshow = nombre.split(" ",1);
