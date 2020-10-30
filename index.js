@@ -19,8 +19,9 @@ let day = now.getDate();
 let hour = now.getHours();
 let min = now.getMinutes();
 let sec = now.getSeconds();
+var f1 = new Date(year, month, day,hour,min,sec); 
 var f2 = new Date(year, month, day,20,00,00); 
-  res.send('run server nodjs '+f2);
+  res.send('run server nodjs '+f2+'date => '+f1);
 });
 app.post('/webhook',express.json(), function(req, res) {
   const agent = new WebhookClient({ request:req, response:res });
