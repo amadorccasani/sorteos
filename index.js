@@ -51,7 +51,7 @@ let sec = now.getSeconds();
 var f1 = new Date(year, month, day,hour,min,sec); 
 var f2 = new Date(year, month, day,20,00,00); 
 let valor = 0;
-if (f1.getTime() <= f2.getTime()){
+// if (f1.getTime() <= f2.getTime()){
   let contact_id = JSON.stringify(req.body.originalDetectIntentRequest["payload"]["contact"]["cId"]);
   agent.add(`
 ¡Hola! 🤗 Soy el asistente virtual de Pernod Ricard 🥂 🍷 🥃
@@ -68,15 +68,15 @@ Asimismo y por extensión, Pernod Ricard, al ser la empresa organizadora, se com
         
 👆 Escribe el número para seleccionar una opción.`);
 
-}else{
-agent.add(`
-El registro del sorteo se acaba de finalizar puedes
-registrarte mañana
+// }else{
+// agent.add(`
+// El registro del sorteo se acaba de finalizar puedes
+// registrarte mañana
 
-Horarios : 8am hasta 8pm 
+// Horarios : 8am hasta 8pm 
 
-Gracias por su comprension :D`);
-}
+// Gracias por su comprension :D`);
+// }
 
   }
  
