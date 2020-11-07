@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
 
+const {WebhookClient,api,axios} = require('./config');
 
-const axios = require('axios');
-
-const {WebhookClient} = require('./config');
-const { default: Axios } = require('axios');
 const { stringify } = require('actions-on-google/dist/common');
 
-// const api='http://127.0.0.1:8000/';
-const api = 'http://3.128.192.110/';
+
+// const api = 'http://3.128.192.110/';
 let nombred = [];
 let msjregistro=[];
 
@@ -44,6 +41,7 @@ var f2 = new Date(year, month, day,20,00,00);
 let valor = 0;
 // if (f1.getTime() <= f2.getTime()){
   let contact_id = JSON.stringify(req.body.originalDetectIntentRequest["payload"]["contact"]["cId"]);
+
   agent.add(`
 ¡Hola! 🤗 Soy el asistente virtual de Pernod Ricard 🥂 🍷 🥃
 
@@ -150,8 +148,6 @@ Recuerda que estaremos enviando un mensaje a partir de las 21:00 pm para informa
   }else{
     agent.add(`Digitar la palabra hola `);
   }
-
-
 
   }
   
