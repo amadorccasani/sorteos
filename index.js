@@ -151,7 +151,6 @@ Recuerda que estaremos enviando un mensaje a partir de las 21:00 pm para informa
 
   }
   
-
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
