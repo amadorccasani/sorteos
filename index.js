@@ -4,39 +4,30 @@ const app = express();
 
 const axios = require('axios');
 
-const {WebhookClient} = require('dialogflow-fulfillment');
+const {WebhookClient} = require('./config');
 const { default: Axios } = require('axios');
 const { stringify } = require('actions-on-google/dist/common');
 
-const api='http://127.0.0.1:8000/';
+// const api='http://127.0.0.1:8000/';
+const api = 'http://3.128.192.110/';
 let nombred = [];
+let msjregistro=[];
 
-// respond with "hello world" when a GET request is made to the homepage
+
+const route = require('./controllers/plazaveaController');
+app.use(route);
+
 app.get('/', function(req, res) {
-  let now = new Date();
-let year = now.getFullYear();
-let month = now.getMonth() + 1;
-let day = now.getDate();
-let hour = now.getHours();
-let min = now.getMinutes();
-let sec = now.getSeconds();
-var f1 = new Date(year, month, day,hour,min,sec); 
-var f2 = new Date(year, month, day,23,00,00); 
-  res.send('run server nodjs '+f2+'date => '+f1);
+  res.send('run server nodjs');
 });
-app.post('/webhook',express.json(), function(req, res) {
+
+
+
+app.post('/vivanda',express.json(), function(req, res) {
   const agent = new WebhookClient({ request:req, response:res });
   console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(req.body));
- 
-//   process.on('unhandledRejection', function(err) {
-//     console.log("controlando :  "+err);
-//     // sendInTheCalvary(err);
-// });
 
-
-
-  
 function welcome(agent) {
 let now = new Date();
 let year = now.getFullYear();
@@ -104,22 +95,25 @@ Asimismo y por extensión, Pernod Ricard, al ser la empresa organizadora, se com
       const language = agent.parameters.language;
      
       const name = agent.parameters.name;
+      const document_number = agent.parameters.dni;
       const email = agent.parameters.email;
-      const document_document = agent.parameters.dni;
+      const phone = agent.parameters.phone;
       const voucher_number = agent.parameters.comprobante;
       const tienda = 'vivanda';
-      nombred.push(name);
+    
     
      
-        // axios.post(api+'api/clients', {
-        //   name,document_document,voucher_number,contact_id,tienda
-        // }).then((rs) => {
-        //   console.log(rs.data)
-        // }).catch((error) => {
-        //   console.error(error);
-        // }).finally(() => {
-        //   // TODO
-        // });
+        axios.post(api+'api/clients', {
+          name,document_number,email,phone,voucher_number,contact_id,tienda
+        }).then((rs) => {
+          nombred.unshift(name);
+          msjregistro.push(rs.data);
+          msjregistro.push(voucher_number)
+        }).catch((error) => {
+          console.error(error);
+        }).finally(() => {
+          // TODO
+        });
 
       agent.add(`
   Finalmente debes subir una captura (foto) del comprobante de pago (boleta o factura). *Luego de haber subido la imagen debes escribir la palabra “Finalizar”*. 🤓 Si seguiste mis indicaciones habrás completado tu registro al sorteo`);
@@ -127,10 +121,13 @@ Asimismo y por extensión, Pernod Ricard, al ser la empresa organizadora, se com
   }
 
   function despedida(agent) {
+
     let nombre = nombred[0];
     let nameshow = nombre.split(" ",1);
-    console.log(nombred);
+
+    console.log(msjregistro)
     if(nombred.length > 0){
+      if(msjregistro[0] == 1){
     agent.add(`
 He finalizado tu registro. Muchas gracias por participar `+nameshow[0]+`
     
@@ -138,8 +135,18 @@ Recuerda que estaremos enviando un mensaje a partir de las 21:00 pm para informa
 
     agent.add(`No te olvides que tienes hasta tres (03) opciones de registro al día con vouchers de compra diferentes. ¡Mucha suerte! 🤞 🤖 `);
 
-    nombred=[];
+      }
+      if(msjregistro[0] == 0){
+        agent.add(`El `+msjregistro[1]+` comprobante de pago ya ha sido registrado, por favor, ingrese un comprobante de pago válido`);
+      }
 
+      if(msjregistro[0] == 2){
+        agent.add(`
+        Te recordamos que sólo puedes registrarte hasta en tres oportunidades por día (con comprobantes de pago distintos). Muchas gracias por tu comprensión. Para mayor información sobre los términos y condiciones del sorteo te invitamos a visitar el siguiente enlace: www.info.com`);
+      }
+  
+      nombred=[];
+      msjregistro=[];  
   }else{
     agent.add(`Digitar la palabra hola `);
   }
@@ -162,3 +169,5 @@ Recuerda que estaremos enviando un mensaje a partir de las 21:00 pm para informa
 app.listen(process.env.PORT || 3000,(e)=>{
     console.log("run port 3000");
 })
+
+// heroku config:add TZ="America/Chicago"
